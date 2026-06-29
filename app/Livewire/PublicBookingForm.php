@@ -29,6 +29,9 @@ class PublicBookingForm extends Component
 
     public $booking_date; // Akan jadi tipe datetime-local
 
+    // Properti untuk menampilkan riwayat servis terakhir
+    public $lastService = null;
+
     // Aturan validasi
     protected $rules = [
         'name' => 'required|string|min:3',
@@ -45,6 +48,24 @@ class PublicBookingForm extends Component
     public function render()
     {
         return view('livewire.public-booking-form'); // 👈 Gunakan layout publik
+    }
+
+    /**
+     * Hook ketika license_plate berubah (Livewire lifecycle)
+     */
+    public function updatedLicensePlate($value)
+    {
+        $this->lastService = null; // Reset saat berubah
+
+        if (!empty($value)) {
+            $vehicle = Vehicle::with('latestService')
+                ->where('license_plate', strtoupper($value))
+                ->first();
+
+            if ($vehicle && $vehicle->latestService) {
+                $this->lastService = $vehicle->latestService;
+            }
+        }
     }
 
     /**

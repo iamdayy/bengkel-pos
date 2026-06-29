@@ -18,7 +18,8 @@ class ServiceHistory extends Model
         'total_price',
         'status',
         'service_date',
-        'notes'
+        'notes',
+        'payment_proof'
     ];
 
     protected $casts = [

@@ -52,11 +52,21 @@
                         <hr>
                         <div class="mb-3">
                             <label for="license_plate" class="form-label">Nomor Polisi</label>
-                            <input type="text" wire:model="license_plate" class="form-control" id="license_plate"
+                            <input type="text" wire:model.live.debounce.500ms="license_plate" class="form-control" id="license_plate"
                                 placeholder="cth: G 1234 AB">
                             @error('license_plate')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
+                            
+                            {{-- Boks Informasi Riwayat Servis Terakhir --}}
+                            @if ($lastService)
+                                <div class="alert alert-info mt-3 mb-0">
+                                    <strong><i class="fas fa-info-circle"></i> Info Servis Terakhir:</strong><br>
+                                    Tanggal: {{ \Carbon\Carbon::parse($lastService->service_date)->format('d M Y') }}<br>
+                                    Catatan: {{ $lastService->notes ?? 'Tidak ada catatan' }}<br>
+                                    Status: {{ ucfirst($lastService->status) }}
+                                </div>
+                            @endif
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">

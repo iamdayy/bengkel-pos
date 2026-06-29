@@ -76,8 +76,8 @@
                                         @endforeach
                                     </div>
                                     @if ($this->isQueueDraft($tx))
-                                        <div class="mt-1">
-                                            <span class="badge bg-light text-dark border">Draft Antrean</span>
+                                        <div class="mt-2">
+                                            <span class="badge bg-light text-primary border border-primary"><i class="fas fa-clipboard-list"></i> Draft Antrean Kasir</span>
                                         </div>
                                     @endif
                                 </td>
@@ -98,10 +98,15 @@
                                     @endif
 
                                     @if ($tx->status == 'done')
-                                        <button type="button" class="btn btn-sm btn-success mb-1 w-100"
-                                            wire:click="markAsDone({{ $tx->id }})">
-                                            Selesaikan
-                                        </button>
+                                        <div class="mt-2 p-2 border rounded bg-light">
+                                            <small class="d-block mb-1 font-weight-bold text-muted">Upload Bukti Bayar</small>
+                                            <input type="file" wire:model="paymentProof" class="form-control form-control-sm mb-1" id="proof-{{ $tx->id }}">
+                                            @error('paymentProof') <span class="text-danger d-block small mb-1">{{ $message }}</span> @enderror
+                                            <button type="button" class="btn btn-sm btn-success w-100"
+                                                wire:click="uploadPaymentProof({{ $tx->id }})">
+                                                Simpan & Selesaikan
+                                            </button>
+                                        </div>
                                     @endif
 
                                     <div class="dropdown">
@@ -220,6 +225,19 @@
                                 </tr>
                             </tfoot>
                         </table>
+
+                        {{-- Tampilkan Bukti Pembayaran jika ada --}}
+                        @if($selectedTransaction->payment_proof)
+                            <div class="mt-3 p-3 border rounded text-center bg-light">
+                                <h6 class="font-weight-bold">Bukti Pembayaran</h6>
+                                <a href="{{ Storage::url($selectedTransaction->payment_proof) }}" target="_blank">
+                                    <img src="{{ Storage::url($selectedTransaction->payment_proof) }}" alt="Bukti Pembayaran" class="img-fluid rounded shadow-sm" style="max-height: 250px;">
+                                </a>
+                                <div class="mt-2">
+                                    <small class="text-muted">Klik gambar untuk melihat ukuran penuh.</small>
+                                </div>
+                            </div>
+                        @endif
 
                     </div>
                     <div class="modal-footer">

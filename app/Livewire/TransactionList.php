@@ -9,11 +9,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class TransactionList extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     private const STATUS_LABELS = [
         'pending' => 'Antrean',
@@ -42,6 +43,9 @@ class TransactionList extends Component
     public $selectedTransaction = null;
 
     public $details = [];
+    
+    // Properti untuk unggah bukti pembayaran
+    public $paymentProof;
 
     #[Layout(
         'layouts.admin'
@@ -234,6 +238,35 @@ class TransactionList extends Component
     public function markAsDone($id)
     {
         $this->updateTransactionStatus($id, 'paid');
+    }
+
+    public function uploadPaymentProof($id)
+    {
+        $this->validate([
+            'paymentProof' => 'required|image|max:2048', // Maksimal 2MB
+        ]);
+
+        $transaction = ServiceHistory::find($id);
+        if ($transaction) {
+            $path = $this->paymentProof->store('payment_proofs', 'public');
+            $transaction->payment_proof = $path;
+            
+            // Jika status masih belum paid, otomatis ubah ke paid
+            if ($transaction->status !== 'paid') {
+                $transaction->status = 'paid';
+            }
+            
+            $transaction->save();
+            
+            $this->paymentProof = null; // Reset property
+            
+            // Perbarui data modal jika sedang terbuka
+            if ($this->selectedTransaction && $this->selectedTransaction->id === $id) {
+                $this->selectedTransaction = $transaction;
+            }
+
+            session()->flash('message', 'Bukti pembayaran berhasil diunggah.');
+        }
     }
 
     /**

@@ -22,10 +22,10 @@
                     <label>Filter Status</label>
                     <select wire:model.live="filterStatus" class="form-control">
                         <option value="">Semua Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="cancelled">Cancelled</option>
-                        <option value="completed">Completed</option>
+                        <option value="pending">Menunggu Konfirmasi</option>
+                        <option value="confirmed">Dikonfirmasi</option>
+                        <option value="cancelled">Dibatalkan</option>
+                        <option value="completed">Selesai</option>
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -62,15 +62,9 @@
                                 <td>{{ $booking->vehicle->license_plate ?? 'N/A' }}</td>
                                 <td>{{ $booking->service_description ?? '-' }}</td>
                                 <td>
-                                    @if ($booking->status == 'pending')
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    @elseif($booking->status == 'confirmed')
-                                        <span class="badge bg-success">Confirmed</span>
-                                    @elseif($booking->status == 'cancelled')
-                                        <span class="badge bg-danger">Cancelled</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $booking->status }}</span>
-                                    @endif
+                                    <span class="badge {{ $this->statusBadgeClass($booking->status) }}">
+                                        {{ $this->statusLabel($booking->status) }}
+                                    </span>
                                 </td>
                                 <td>
                                     @if ($booking->status == 'pending' || $booking->status == 'confirmed')

@@ -58,4 +58,26 @@ class BookingManagement extends Component
             session()->flash('message', 'Status booking berhasil diubah.');
         }
     }
+
+    public function statusLabel($status)
+    {
+        $labels = [
+            'pending' => 'Menunggu Konfirmasi',
+            'confirmed' => 'Dikonfirmasi',
+            'cancelled' => 'Dibatalkan',
+            'completed' => 'Selesai'
+        ];
+        return $labels[$status] ?? ucfirst($status);
+    }
+
+    public function statusBadgeClass($status)
+    {
+        $classes = [
+            'pending' => 'bg-warning text-dark',
+            'confirmed' => 'bg-info text-white',
+            'cancelled' => 'bg-danger text-white',
+            'completed' => 'bg-success text-white'
+        ];
+        return $classes[$status] ?? 'bg-secondary text-white';
+    }
 }
