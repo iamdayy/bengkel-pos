@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('vehicle_id')->nullable()->constrained('vehicles')->onDelete('set null');
 
             $table->dateTime('booking_date');
-            $table->text('service_description')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->timestamps();
         });

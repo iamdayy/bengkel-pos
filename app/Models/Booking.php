@@ -14,7 +14,6 @@ class Booking extends Model
         'customer_id',
         'vehicle_id',
         'booking_date',
-        'service_description',
         'status',
     ];
 

@@ -10,7 +10,6 @@ class BookingFactory extends Factory
     {
         return [
             'booking_date' => fake()->dateTimeBetween('+1 days', '+2 weeks'),
-            'service_description' => fake()->sentence(5),
             'status' => fake()->randomElement(['pending', 'confirmed', 'cancelled']),
         ];
     }

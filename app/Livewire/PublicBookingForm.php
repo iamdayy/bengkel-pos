@@ -40,7 +40,6 @@ class PublicBookingForm extends Component
         'license_plate' => 'required|string',
         'brand' => 'required|string', // Merk
         'model' => 'required|string', // Model
-        'service_description' => 'required|string|min:10', // Keluhan
         'booking_date' => 'required|date|after_or_equal:today',
     ];
 
@@ -146,7 +145,6 @@ class PublicBookingForm extends Component
             'customer_id' => $customer->id,
             'vehicle_id' => $vehicle->id,
             'booking_date' => $this->booking_date,
-            'service_description' => $this->service_description,
             'status' => 'pending', // Status awal selalu pending
         ]);
         

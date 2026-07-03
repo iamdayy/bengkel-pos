@@ -96,16 +96,8 @@
                         <div class="mb-3">
                             <label for="booking_date" class="form-label">Pilih Tanggal & Jam Booking</label>
                             <input type="datetime-local" wire:model="booking_date" class="form-control"
-                                id="booking_date">
+                                id="booking_date" min="{{ now()->format('Y-m-d\TH:i') }}">
                             @error('booking_date')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="service_description" class="form-label">Keluhan atau Jenis Servis</label>
-                            <textarea wire:model="service_description" class="form-control" id="service_description" rows="3"
-                                placeholder="cth: Ganti oli, servis CVT, rem blong..."></textarea>
-                            @error('service_description')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

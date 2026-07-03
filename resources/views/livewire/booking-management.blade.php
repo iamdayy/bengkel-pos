@@ -47,7 +47,6 @@
                             <th>Tanggal Booking</th>
                             <th>Pelanggan</th>
                             <th>Kendaraan</th>
-                            <th>Keterangan Servis</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -60,7 +59,6 @@
                                 </td>
                                 <td>{{ $booking->customer->name ?? 'N/A' }}</td>
                                 <td>{{ $booking->vehicle->license_plate ?? 'N/A' }}</td>
-                                <td>{{ $booking->service_description ?? '-' }}</td>
                                 <td>
                                     <span class="badge {{ $this->statusBadgeClass($booking->status) }}">
                                         {{ $this->statusLabel($booking->status) }}
