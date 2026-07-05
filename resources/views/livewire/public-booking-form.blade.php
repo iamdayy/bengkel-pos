@@ -25,7 +25,28 @@
 
                     <form wire:submit.prevent="storeBooking">
 
-                        <h5 class="mt-4">1. Data Diri Anda</h5>
+                        <h5 class="mt-4">1. Nomor Polisi</h5>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="license_plate" class="form-label">Nomor Polisi</label>
+                            <input type="text" wire:model.live.debounce.500ms="license_plate" class="form-control" id="license_plate"
+                                placeholder="cth: G 1234 AB">
+                            @error('license_plate')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            
+                            {{-- Boks Informasi Riwayat Servis Terakhir --}}
+                            @if ($lastService)
+                                <div class="alert alert-info mt-3 mb-0">
+                                    <strong><i class="fas fa-info-circle"></i> Info Servis Terakhir:</strong><br>
+                                    Tanggal: {{ \Carbon\Carbon::parse($lastService->service_date)->format('d M Y') }}<br>
+                                    Catatan: {{ $lastService->notes ?? 'Tidak ada catatan' }}<br>
+                                    Status: {{ ucfirst($lastService->status) }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <h5 class="mt-4">2. Data Diri Anda</h5>
                         <hr>
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Lengkap</label>
@@ -52,26 +73,9 @@
                             </div>
                         </div>
 
-                        <h5 class="mt-4">2. Data Kendaraan</h5>
+                        <h5 class="mt-4">3. Data Kendaraan</h5>
                         <hr>
-                        <div class="mb-3">
-                            <label for="license_plate" class="form-label">Nomor Polisi</label>
-                            <input type="text" wire:model.live.debounce.500ms="license_plate" class="form-control" id="license_plate"
-                                placeholder="cth: G 1234 AB">
-                            @error('license_plate')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            
-                            {{-- Boks Informasi Riwayat Servis Terakhir --}}
-                            @if ($lastService)
-                                <div class="alert alert-info mt-3 mb-0">
-                                    <strong><i class="fas fa-info-circle"></i> Info Servis Terakhir:</strong><br>
-                                    Tanggal: {{ \Carbon\Carbon::parse($lastService->service_date)->format('d M Y') }}<br>
-                                    Catatan: {{ $lastService->notes ?? 'Tidak ada catatan' }}<br>
-                                    Status: {{ ucfirst($lastService->status) }}
-                                </div>
-                            @endif
-                        </div>
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="brand" class="form-label">Merk Kendaraan</label>
@@ -91,7 +95,7 @@
                             </div>
                         </div>
 
-                        <h5 class="mt-4">3. Rincian Servis</h5>
+                        <h5 class="mt-4">4. Rincian Servis</h5>
                         <hr>
                         <div class="mb-3">
                             <label for="booking_date" class="form-label">Pilih Tanggal & Jam Booking</label>

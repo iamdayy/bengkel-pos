@@ -5,6 +5,41 @@
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
     </div>
 
+    <!-- Form Filter -->
+    <form method="GET" action="{{ route('home') }}" class="mb-4">
+        <div class="row align-items-end">
+            <div class="col-md-3 mb-2">
+                <label>Filter Waktu</label>
+                <select name="filter" class="form-control" onchange="this.form.submit()">
+                    <option value="today" {{ request('filter') == 'today' || !request('filter') ? 'selected' : '' }}>Hari Ini</option>
+                    <option value="week" {{ request('filter') == 'week' ? 'selected' : '' }}>Minggu Ini</option>
+                    <option value="month" {{ request('filter') == 'month' ? 'selected' : '' }}>Bulan Ini</option>
+                    <option value="custom" {{ request('filter') == 'custom' ? 'selected' : '' }}>Range Tanggal</option>
+                </select>
+            </div>
+            @if(request('filter') == 'custom')
+            <div class="col-md-3 mb-2">
+                <label>Dari Tanggal</label>
+                <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}" required>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label>Sampai Tanggal</label>
+                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}" required>
+            </div>
+            <div class="col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary w-100">Terapkan</button>
+            </div>
+            @endif
+        </div>
+    </form>
+
+    @php
+        $filterText = 'Hari Ini';
+        if(request('filter') == 'week') $filterText = 'Minggu Ini';
+        if(request('filter') == 'month') $filterText = 'Bulan Ini';
+        if(request('filter') == 'custom') $filterText = 'Range Tanggal';
+    @endphp
+
     <div class="row">
 
         <div class="col-xl-3 col-md-6 mb-4">
@@ -13,7 +48,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Pendapatan (Hari Ini)</div>
+                                Pendapatan ({{ $filterText }})</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Rp
                                 {{ number_format($todaysRevenue, 0, ',', '.') }}</div>
                         </div>
@@ -83,7 +118,7 @@
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Grafik Pendapatan (7 Hari Terakhir)</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Grafik Pendapatan ({{ $filterText }})</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
@@ -96,7 +131,7 @@
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">5 Jasa Servis Terlaris</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">5 Jasa Servis Terlaris ({{ $filterText }})</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-pie pt-4 pb-2">
@@ -112,7 +147,7 @@
         <div class="col-lg-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">5 Transaksi Servis Terbaru</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">5 Transaksi Servis Terbaru ({{ $filterText }})</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
